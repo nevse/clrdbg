@@ -29,4 +29,17 @@ public static class RuntimeInfo {
             listener?.Stop();
         }
     }
+
+    public static string GetArchitecture() {
+        return IsAarch64 ? "arm64" : "x64";
+    }
+    public static string GetOperationSystem() {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return "win";
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            return "osx";
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            return "linux";
+        return "unknown";
+    }
 }

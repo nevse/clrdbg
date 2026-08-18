@@ -7,7 +7,6 @@ public class ProcessArgumentBuilder {
         this.args.Add(arg);
         return this;
     }
-
     public ProcessArgumentBuilder Append(params string[] args) {
         this.args.AddRange(args);
         return this;

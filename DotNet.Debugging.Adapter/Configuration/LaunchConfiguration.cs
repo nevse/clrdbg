@@ -12,11 +12,14 @@ public class LaunchConfiguration : BaseConfiguration {
     public List<string> Arguments { get; private set; }
     public Dictionary<string, string> EnvironmentVariables { get; private set; }
     public LaunchRequestConsoleType Console { get; }
+    public CoreRuntime Runtime { get; }
     public bool SuppressJITOptimizations { get; }
     public bool StopAtEntry { get; }
     public string? LaunchSettingsFilePath { get; }
     public string? LaunchSettingsProfile { get; }
     public CoreClrMobileDebuggerOptions? MobileOptions { get; }
+    public string? RemoteHostDirectory { get; }
+    public string? RemoteTargetDirectory { get; }
     // TODO: implement
     public object? PipeTransport { get; }
 
@@ -26,11 +29,14 @@ public class LaunchConfiguration : BaseConfiguration {
         Arguments = properties.TryGetValue("args").ToClass<List<string>>() ?? new List<string>();
         EnvironmentVariables = properties.TryGetValue("env").ToClass<Dictionary<string, string>>() ?? new Dictionary<string, string>();
         Console = properties.TryGetValue("console").ToValue<LaunchRequestConsoleType>(LaunchRequestConsoleType.InternalConsole);
+        Runtime = properties.TryGetValue("runtime").ToValue<CoreRuntime>(CoreRuntime.CoreClr);
         SuppressJITOptimizations = properties.TryGetValue("suppressJITOptimizations").ToValue<bool>(false);
         StopAtEntry = properties.TryGetValue("stopAtEntry").ToValue<bool>(false);
         LaunchSettingsFilePath = properties.TryGetValue("launchSettingsFilePath").ToClass<string>().ToPlatformPath();
         LaunchSettingsProfile = properties.TryGetValue("launchSettingsProfile").ToClass<string>();
         MobileOptions = properties.TryGetValue("coreClrMobileDebuggerOptions").ToClass<CoreClrMobileDebuggerOptions>();
+        RemoteHostDirectory = properties.TryGetValue("remoteCoreclrHost").ToClass<string>().ToPlatformPath();
+        RemoteTargetDirectory = properties.TryGetValue("remoteCoreclrTarget").ToClass<string>().ToPlatformPath();
 
         if (string.IsNullOrEmpty(WorkingDirectory))
             WorkingDirectory = Path.GetDirectoryName(Path.GetFullPath(Program));
@@ -55,15 +61,17 @@ public class LaunchConfiguration : BaseConfiguration {
     }
     public override void VerifyMissingProperties() {
         if (string.IsNullOrEmpty(Program) || (!File.Exists(Program) && !Directory.Exists(Program)))
-            throw Session.GetProtocolException(string.Format(Resources.MsgInvalidProgram, Program));
+            throw new ArgumentException(string.Format(Resources.MsgInvalidProgram, Program));
 
         if (MobileOptions != null) {
             if (string.IsNullOrEmpty(MobileOptions.Platform))
-                throw Session.GetProtocolException(Resources.MsgMissingPlatform);
+                throw new ArgumentException(Resources.MsgMissingPlatform);
             if (string.IsNullOrEmpty(MobileOptions.AssetsPath))
-                throw Session.GetProtocolException(Resources.MsgMissingAssets);
-            if (string.IsNullOrEmpty(MobileOptions.MscordbiPath))
-                throw Session.GetProtocolException(Resources.MsgMissingMscordbi);
+                throw new ArgumentException(Resources.MsgMissingAssets);
+            if (string.IsNullOrEmpty(RemoteHostDirectory) || !Directory.Exists(RemoteHostDirectory))
+                throw new ArgumentException(Resources.MsgMissingCoreclrHost);
+            if (string.IsNullOrEmpty(RemoteTargetDirectory) || !Directory.Exists(RemoteTargetDirectory))
+                throw new ArgumentException(Resources.MsgMissingCoreclrTarget);
         }
     }
 

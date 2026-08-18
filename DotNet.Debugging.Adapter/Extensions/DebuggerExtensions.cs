@@ -66,17 +66,4 @@ public static partial class DebuggerExtensions {
     }
     [GeneratedRegex(@"\{([^{}]+)\}", RegexOptions.Compiled)]
     private static partial Regex LogpointExpressionRegex();
-
-    public static RemoteAttachInfo ToRemoteAttachInfo(this CoreClrMobileDebuggerOptions options) {
-        var assetsPath = options.AssetsPath.ToPlatformPath();
-        var mscordbiPath = options.MscordbiPath.ToPlatformPath();
-        return new RemoteAttachInfo {
-            Platform = options.Platform ?? string.Empty,
-            Address = options.Address ?? "127.0.0.1",
-            Port = options.Port,
-            IsServer = options.IsServer,
-            MscordbiPath = mscordbiPath,
-            AssembliesPath = $"{assetsPath};{Path.GetDirectoryName(mscordbiPath)}"
-        };
-    }
 }

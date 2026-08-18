@@ -2,6 +2,13 @@ using System.Text.Json.Serialization;
 
 namespace DotNet.Debugging.Adapter;
 
+public enum CoreRuntime {
+    CoreClr,
+    Android,
+    IOS,
+    Maccatalyst,
+}
+
 public class LaunchSettings {
     [JsonPropertyName("profiles")]
     public Dictionary<string, LaunchProfile>? Profiles { get; set; }
@@ -31,30 +38,24 @@ public class LaunchProfile {
 }
 
 public class CoreClrMobileDebuggerOptions {
+    [JsonPropertyName("platform")]
+    public string? Platform { get; set; }
+
     [JsonPropertyName("ip")]
     public string? Address { get; set; }
 
     [JsonPropertyName("port")]
     public int Port { get; set; }
 
-    [JsonPropertyName("platform")]
-    public string? Platform { get; set; }
-
     [JsonPropertyName("isServer")]
     public bool IsServer { get; set; }
 
-    [JsonPropertyName("runtimeIdentifier")]
-    public string? RuntimeIdentifier { get; set; }
-
-    [JsonPropertyName("device")] // UDID (iOS) / ADB serial (Android) / null
-    public string? Device { get; set; }
-
-    [JsonPropertyName("isSimulator")]
-    public bool IsSimulator { get; set; }
-
-    [JsonPropertyName("mscordbiPath")]
-    public string? MscordbiPath { get; set; }
-
     [JsonPropertyName("assetsPath")]
     public string? AssetsPath { get; set; }
+
+    // [JsonPropertyName("device")] // UDID (iOS) / ADB serial (Android) / null
+    // public string? Device { get; set; }
+
+    // [JsonPropertyName("isSimulator")]
+    // public bool IsSimulator { get; set; }
 }

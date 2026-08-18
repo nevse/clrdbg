@@ -24,7 +24,7 @@ public class AttachConfiguration : BaseConfiguration {
     }
     public override void VerifyMissingProperties() {
         if (string.IsNullOrEmpty(ProcessName) && ProcessId <= 0)
-            throw Session.GetProtocolException(Resources.MsgMissingProcess);
+            throw new ArgumentException(Resources.MsgMissingProcess);
     }
 
     public int GetProcessId() {

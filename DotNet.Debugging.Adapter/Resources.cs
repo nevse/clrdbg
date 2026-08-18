@@ -10,7 +10,8 @@ public static class Resources {
     public const string MsgPdbLoaded = "Symbols loaded.";
     public const string MsgPdfSkipped = "Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.";
 
-    public const string MsgMissingPlatform = "Missing required property 'platform'.";
-    public const string MsgMissingAssets = "Missing required property 'assets'.";
-    public const string MsgMissingMscordbi = "Missing required property 'mscordbiPath'.";
+    public const string MsgMissingPlatform = "Missing required property: 'platform'.";
+    public const string MsgMissingAssets = "Missing required property: 'assets'.";
+    public const string MsgMissingCoreclrHost = "coreclrHost: TODO";
+    public const string MsgMissingCoreclrTarget = "coreclrTarget: TODO";
 }
