@@ -31,8 +31,17 @@ public class LaunchProfile {
 }
 
 public class CoreClrMobileDebuggerOptions {
+    [JsonPropertyName("ip")]
+    public string? Address { get; set; }
+
+    [JsonPropertyName("port")]
+    public int Port { get; set; }
+
     [JsonPropertyName("platform")]
-    public string? Platform { get; }
+    public string? Platform { get; set; }
+
+    [JsonPropertyName("isServer")]
+    public bool IsServer { get; set; }
 
     [JsonPropertyName("runtimeIdentifier")]
     public string? RuntimeIdentifier { get; set; }
@@ -43,6 +52,9 @@ public class CoreClrMobileDebuggerOptions {
     [JsonPropertyName("isSimulator")]
     public bool IsSimulator { get; set; }
 
-    [JsonPropertyName("vsdbgRemoteResources")] // Optional override for the directory that holds the Microsoft remote-debugging native binaries
-    public string? VsdbgRemoteResources { get; set; }
+    [JsonPropertyName("mscordbiPath")]
+    public string? MscordbiPath { get; set; }
+
+    [JsonPropertyName("assetsPath")]
+    public string? AssetsPath { get; set; }
 }
